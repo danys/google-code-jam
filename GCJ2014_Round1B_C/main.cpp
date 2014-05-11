@@ -71,11 +71,9 @@ bool allreached(int step)
 int dfs(int ccity,int targetcity,int firstcity)
 {
     dvisited[ccity]=true;
-    cout << "Ccity = " << ccity << endl;
     for(unsigned int i=0;i<city[ccity].size();i++)
     {
         int ncity = city[ccity][i];
-        cout << "Ncity = " << ncity << " targetcoty = " << targetcity << endl;
         if (visited[ncity] || dvisited[ncity]) continue;
         if (ncity==targetcity)return firstcity;//true;
         else
@@ -89,13 +87,11 @@ int dfs(int ccity,int targetcity,int firstcity)
 
 bool betterreachable(int ncity,int pcity)
 {
-    //cout << "Betterreach = " << ncity << " go to city = " << pcity << endl;
     string temp=zip[ncity];
     // zip and city[][]
     //pcity -> ncity cheaper
-    /*bool*/int fcity = dfs(pcity,ncity,-1);
-    if (fcity!=-1) cout << "Ncity soltz = " << ncity << endl;
-    if ((fcity!=-1) && (zip[fcity]<temp)) {cout << "Hello" << endl;return true;}
+    int fcity = dfs(pcity,ncity,-1);
+    if ((fcity!=-1) && (zip[fcity]<temp)) {return true;}
     else return false;
 }
 
@@ -121,7 +117,6 @@ string solve(int step)
         for(int j=2;j<=step;j++)
             {
                 memset(dvisited,false,sizeof(dvisited));
-                cout << "Step = " << step  << endl;
              if(betterreachable(mstr,solution[step-j]))
              {
                 str="";
