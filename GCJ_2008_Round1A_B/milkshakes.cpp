@@ -29,8 +29,8 @@ void printsol()
 {
     for(int i=0;i<N;i++)
     {
-        if(i!=N-1) cout << sol[i] << " ";
-        else cout << sol[i];
+        if(i!=N-1) cout << ressol[i] << " ";
+        else cout << ressol[i];
     }
 }
 
@@ -95,24 +95,22 @@ bool isBetter()
 
 bool solve(int m)
 {
-    bool b;
-    if ((m==N) && (isSol()))
+    bool b=false;
+    if ((m==N) && (isSol()) && ((ressol[0]==-1) || (isBetter())))
     {
         b=true;
-        if((ressol[0]==-1) || (isBetter())) copysol();
-        //return true;
+        copysol();
     }
     else
     {
         if (m>=N)
         {
             b=false;
-            //return false;
         }
         else
         {
             vector<int> v=ht[m];
-            if (v.size()==0)    //return solve(m+1);
+            if (v.size()==0)
             {
                 b=solve(m+1);
             }
@@ -121,13 +119,12 @@ bool solve(int m)
                 for(unsigned int i=0;i<v.size();i++)
                 {
                     sol[m]=v[i];
-                    if (solve(m+1)) b=true;//return true;
+                    if (solve(m+1)) b=true;
                 }
             }
         }
     }
     return b;
-    //return false;
 }
 
 int main()
@@ -147,6 +144,7 @@ int main()
                 cin >> m;
                 cin >> malted;
                 insertm(m-1,malted);
+                if ((T>1) && (malted==1)) insertm(m-1,0);
                 cust[l-1][m-1]=malted;
             }
         }
