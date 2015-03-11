@@ -22,7 +22,7 @@ void matrixmult(int** A, int** B, int** C)
 
 //Set values a,b,c,d in matrix in matrix with rows
 //Row 0: a,b
-//Row 1: c,b
+//Row 1; c,b
 void seta(int** m, int a, int b, int c, int d)
 {
     m[0][0]=a;
@@ -32,12 +32,11 @@ void seta(int** m, int a, int b, int c, int d)
 }
 
 //Allocate storage for matrix a
-int** anew(int** a)
+void anew(int** &a)
 {
     a = new int*[2];
     a[0]=new int[2];
     a[1]=new int[2];
-    return a;
 }
 
 //Free storage of matrix a
@@ -59,7 +58,7 @@ void solve(int** in,long long n,int** out)
     else
     {
         int** t = 0;
-        t = anew(t);
+        anew(t);
         if (n%2==0)
         {
             solve(in,n/2,t);
@@ -91,9 +90,9 @@ int main()
     int T;
     long long n;
     cin >> T;
-    init = anew(init);
+    anew(init);
     seta(init,3,5,1,3);
-    sol = anew(sol);
+    anew(sol);
     seta(sol,0,0,0,0);
     for(int z=1;z<=T;z++)
     {
