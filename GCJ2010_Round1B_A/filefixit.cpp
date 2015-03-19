@@ -27,19 +27,67 @@ void convertToArray(string path,string (&a)[maxpathlen], int &len)
     {
         if ((i==0) && (path[i]!='/')) return;
         if (i==0) continue;
-        if (path[i]!='/') curname.push_back(path[i]);
-        else if ((path[i]=='/') || (i==path.size()-1))
+        if (i==path.size()-1)
+        {
+            curname.push_back(path[i]);
+            a[len]=curname;
+            len++;
+            curname="";
+        }
+        else if (path[i]=='/')
         {
             a[len]=curname;
             len++;
             curname="";
         }
+        else if (path[i]!='/') curname.push_back(path[i]);
     }
 }
 
-void insertIntoTree(int k,string a[maxpathlen],int len)
+void insertIntoTree(int k,string a[maxpathlen],int len,int curnode)
 {
-    //recursive algorithm
+    if (k==len) return;
+    vector<pair<string,int>> v = tree[curnode];
+    if (v.size()==0)
+    {
+        pair<string,int> p(a[k],tree.size());
+        v.push_back(p);
+        tree[curnode] = v;
+        vector<pair<string,int>> vnew;
+        vnew.clear();
+        tree.push_back(vnew);
+        nnodes++;
+        insertIntoTree(k+1,a,len,p.second);
+        return;
+    }
+    pair<string,int> p;
+    string nodestr;
+    int nodeindex;
+    bool found=false;
+    unsigned int s = v.size();
+    for(unsigned int i=0;(i<s) && (found==false);i++)
+    {
+        p = v[i];
+        nodestr=p.first;
+        nodeindex=p.second;
+        if (nodestr==a[k])
+        {
+            insertIntoTree(k+1,a,len,nodeindex);
+            found=true;
+        }
+    }
+    if (found==false)
+    {
+        pair<string,int> p(a[k],tree.size());
+        v.push_back(p);
+        tree[curnode] = v;
+         vector<pair<string,int>> vnew;
+        vnew.clear();
+        tree.push_back(vnew);
+        nnodes++;
+        insertIntoTree(k+1,a,len,p.second);
+    }
+    return;
 }
 
 void insertPath(string path)
@@ -47,7 +95,7 @@ void insertPath(string path)
     int len;
     string stra[maxpathlen];
     convertToArray(path,stra,len);
-    //insertInToTree(...)
+    insertIntoTree(0,stra,len,0);
 }
 
 int main()
